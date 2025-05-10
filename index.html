@@ -3,208 +3,968 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Best Paintings and Pics</title>
+    <title>Artistry - Premium Gallery Collection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
     <style>
         :root {
-            --primary-color: #3a6ea5;
-            --secondary-color: #004e98;
-            --accent-color: #ff9a8d;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
+            --primary-color: #2b6cb0;
+            --secondary-color: #1a4971;
+            --accent-color: #f687b3;
+            --light-color: #f7fafc;
+            --dark-color: #1a202c;
+            --text-color: #2d3748;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --radius: 12px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--dark-color);
+            line-height: 1.7;
+            color: var(--text-color);
             background-color: var(--light-color);
-            margin: 0;
-            padding: 0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
         
-        header {
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--light-color);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+        
+        /* Header styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-scrolled {
+            box-shadow: var(--shadow-md);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 0.5rem;
+            font-size: 1.75rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .header {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                        url('Sunset.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .header-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
             background-color: var(--primary-color);
             color: white;
-            text-align: center;
-            padding: 2rem 1rem;
-            margin-bottom: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
         }
         
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 10px rgba(0, 0, 0, 0.15);
         }
         
-        .subtitle {
-            font-style: italic;
-            margin-top: 0.5rem;
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+            margin-left: 1rem;
+        }
+        
+        .btn-outline:hover {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        /* Main content */
+        .section {
+            padding: 6rem 2rem;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 1rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .section-title p {
+            color: var(--text-color);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin: 1.5rem auto 0;
+            border-radius: 2px;
         }
         
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
             margin-bottom: 3rem;
         }
         
         .gallery-item {
-            background-color: white;
-            border-radius: 8px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
         }
         
         .gallery-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
         }
         
         .gallery-item img {
             width: 100%;
-            height: 300px;
+            height: 350px;
             object-fit: cover;
             display: block;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(1.05);
         }
         
         .gallery-content {
-            padding: 1.5rem;
+            padding: 1.75rem;
         }
         
         .gallery-content h2 {
-            color: var(--secondary-color);
+            color: var(--primary-color);
             margin-top: 0;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+        
+        .gallery-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
         }
         
         .gallery-content p {
-            margin-bottom: 1rem;
+            color: var(--text-color);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
             text-align: justify;
+            font-size: 1.05rem;
         }
         
-        footer {
-            background-color: var(--secondary-color);
+        .img-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover .img-overlay {
+            opacity: 1;
+        }
+        
+        .img-like {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            color: var(--text-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+        
+        .img-like:hover {
+            color: #e53e3e;
+            transform: scale(1.1);
+        }
+        
+        .img-like.active {
+            color: #e53e3e;
+        }
+        
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .read-more i {
+            margin-left: 0.5rem;
+            transition: var(--transition);
+        }
+        
+        .read-more:hover {
+            color: var(--secondary-color);
+        }
+        
+        .read-more:hover i {
+            transform: translateX(5px);
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: rgba(43, 108, 176, 0.1);
+            color: var(--primary-color);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .categories {
+            margin-bottom: 1rem;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            transition: all 0.3s ease;
+            transform: scale(0.8);
+        }
+        
+        .modal.open .modal-content {
+            transform: scale(1);
+        }
+        
+        .modal-img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 1.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--accent-color);
+            transform: rotate(90deg);
+        }
+        
+        /* Features section */
+        .features {
+            background-color: #f1f5f9;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .features-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(43, 108, 176, 0.05) 0%, rgba(43, 108, 176, 0) 100%);
+            z-index: 0;
+        }
+        
+        .features-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1.5rem;
+            background-color: rgba(43, 108, 176, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover .feature-icon {
+            background-color: var(--primary-color);
+            color: white;
+            transform: rotateY(180deg);
+        }
+        
+        .feature-title {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+        }
+        
+        /* CTA section */
+        .cta {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('Night.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: white;
             text-align: center;
-            padding: 1.5rem;
-            margin-top: 2rem;
+            position: relative;
+        }
+        
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .cta-text {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .subscription-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .subscription-input {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px 0 0 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .subscription-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 0 50px 50px 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .subscription-btn:hover {
+            background-color: #e66da4;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+        
+        .footer-col p {
+            line-height: 1.8;
+            color: #cbd5e0;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-links a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .footer-links a i {
+            margin-right: 0.5rem;
+            font-size: 0.75rem;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            margin-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: var(--shadow-md);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 900;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+        
+        /* Filter controls */
+        .filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Loading animation */
+        .loading-spinner {
+            display: none;
+            margin: 2rem auto;
+            text-align: center;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(43, 108, 176, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .header-title {
+                font-size: 3rem;
+            }
+            
+            .section {
+                padding: 5rem 2rem;
+            }
         }
         
         @media (max-width: 768px) {
+            .header-title {
+                font-size: 2.5rem;
+            }
+            
             .gallery {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 2rem;
+            }
+            
+            .feature-card {
+                padding: 1.5rem;
+            }
+            
+            .menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                gap: 0;
+                box-shadow: var(--shadow-md);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            .nav-links.show {
+                max-height: 300px;
+            }
+            
+            .nav-links a {
+                padding: 1rem 2rem;
+                width: 100%;
+                border-bottom: 1px solid #edf2f7;
+            }
+            
+            .nav-links a::after {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header-title {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.85rem;
+            }
+            
+            .subscription-form {
+                flex-direction: column;
+            }
+            
+            .subscription-input {
+                border-radius: 50px;
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+            
+            .subscription-btn {
+                border-radius: 50px;
+            }
+        }
+        
+        /* Menu button */
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        /* Loading animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Best Paintings and Pics</h1>
-            <p class="subtitle">A collection of breathtaking imagery from around the world!!</p>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-palette"></i>
+                Artistry
+            </a>
+            <button class="menu-btn" id="menuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links" id="navLinks">
+                <a href="#gallery">Gallery</a>
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Header -->
+    <header class="header" id="home">
+        <div class="header-content">
+            <h1 class="header-title">Discover Extraordinary Art</h1>
+            <p class="header-subtitle">Explore our curated collection of breathtaking imagery from around the world</p>
+            <div class="header-buttons">
+                <a href="#gallery" class="btn">Explore Gallery</a>
+                <a href="#contact" class="btn btn-outline">Contact Us</a>
+            </div>
         </div>
     </header>
     
-    <main class="container">
-        <div class="gallery">
-            <article class="gallery-item">
-                <img src="Bird.png" alt="Nature's Harmony" loading="lazy">
-                <div class="gallery-content">
-                    <h2>Nature's Harmony</h2>
-                    <p>
-                        A hummingbird in mid-flight gracefully approaches a vibrant red hibiscus flower, 
-                        capturing the beauty of wildlife in motion. This stunning moment highlights the delicate balance of nature, 
-                        where color, motion, and life come together in perfect sync. Explore more breathtaking 
-                        photography that celebrates the wonders of the natural world.
-                    </p>
-                </div>
-            </article>
-            
-            <article class="gallery-item">
-                <img src="Moon.png" alt="Earth rise from Moon's perspective" loading="lazy">
-                <div class="gallery-content">
-                    <h2>Earthrise</h2>
-                    <p>
-                        A breathtaking view of our home planet emerging over the Moon's horizon, captured from space. 
-                        This iconic image serves as a powerful reminder of Earth's beauty, fragility, and the vastness of the universe. 
-                        Explore the wonders of space and the perspective it offers on our place in the cosmos.
-                    </p>
-                </div>
-            </article>
-            
-            <article class="gallery-item">
-                <img src="Flowers.png" alt="Elegance in Bloom" loading="lazy">
-                <div class="gallery-content">
-                    <h2>Elegance in Bloom</h2>
-                    <p>
-                        Delicate petals unfold in a mesmerizing display of nature's artistry. These blossoms showcase 
-                        the intricate details and vibrant colors that make floral photography so captivating. Each flower tells 
-                        a story of growth, resilience, and the fleeting beauty that surrounds us in the natural world.
-                    </p>
-                </div>
-            </article>
-            
-            <article class="gallery-item">
-                <img src="Night.png" alt="Northern Skies" loading="lazy">
-                <div class="gallery-content">
-                    <h2>Northern Skies</h2>
-                    <p>
-                        Experience the magic of the northern skies as vibrant auroras paint the darkness with their ethereal glow.
-                        Nature's most spectacular light show unfolds in brilliant greens, magentas, and purples, dancing across the
-                        star-studded canvas of night. This breathtaking display reflects perfectly in the tranquil waters below, 
-                        doubling the wonder of this rare phenomenon.
-                    </p>
-                </div>
-            </article>
-            <article class="gallery-item">
-                <img src="Sunset.png" alt="Sunset Picture" loading="lazy">
-                <div class="gallery-content">
-                    <h2>Sunset Picture</h2>
-                    <p>
-                        This image shows a stunning tropical beach sunset. The sky transitions from deep orange and yellow near the horizon 
-                        to soft purple higher up, creating a vibrant gradient. Silhouettes of palm trees line the shoreline, their dark shapes
-                        contrasting dramatically with the colorful sky. The ocean water reflects the sunset colors, creating a mirror-like effect
-                        that extends the beauty of the sky. Gentle waves are washing up on golden sand, which also captures the warm hues of the 
-                        sunset. The entire scene evokes a sense of tranquility and paradise, showcasing nature's ability to paint breathtaking 
-                        landscapes during the transition from day to night in a tropical setting.
-                    </p>
-                </div>
-            </article>
-            <article class="gallery-item">
-                <img src="Trees.png" alt="Moraine Lake" loading="lazy">
-                <div class="gallery-content">
-                    <h2>Moraine Lake</h2>
-                    <p>
-                        Witness the breathtaking beauty of Moraine Lake, where nature's grandeur is on full display. This pristine alpine lake 
-                        showcases a mesmerizing turquoise-blue water surface that perfectly mirrors the dramatic mountain peaks illuminated by 
-                        golden alpenglow at sunset. The rugged mountain range, with its snow-capped summits and steep rocky faces, creates a 
-                        magnificent backdrop against the tranquil waters.
-                    </p>
-                </div>
-            </article>
-            <article class="gallery-item">
-                <img src="Window.png" alt="Cathedral Cove" loading="lazy">
-                <div class="gallery-content">
-                    <h2>Cathedral Cove</h2>
-                    <p>
-                        Step into a world where nature crafts its own perfect frames. This stunning view from Cathedral Cove reveals a 
-                        magnificent natural limestone arch that opens onto a pristine white sand beach. The dramatic rock formation creates a 
-                        gateway to the turquoise waters of the Pacific, where solitary sea stacks rise majestically from the gentle waves.
-                    </p>
-                </div>
-            </article>
-        </div>
-    </main>
-    
-    <footer>
+    <!-- Gallery Section -->
+    <section class="section" id="gallery">
         <div class="container">
-            <p>&copy; 2025 Best Paintings and Pics. All rights reserved.</p>
-        </div>
-    </footer>
-</body>
-</html>
+            <div class="section-title">
+                <h2>Featured Gallery</h2>
+                <p>Immerse yourself in our carefully selected collection of breathtaking imagery that captures the beauty of our world.</p>
+            </div>
+            
+            <div class="filter-controls">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="nature">Nature</button>
+                <button class="filter-btn" data-filter="space">Space</button>
+                <button class="filter-btn" data-filter="landscape">Landscape</button>
+            </div>
+            
+            <div class="gallery">
+                <article class="gallery-item" data-category="nature">
+                    <div class="img-container">
+                        <img src="Bird.png" alt="Nature's Harmony" loading="lazy">
+                        <div class="img-overlay"></div>
+                        <div class="img-like">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-content">
+                        <div class="categories">
+                            <span class="tag">Nature</span>
+                            <span class="tag">Wildlife</span>
+                        </div>
+                        <h2>Nature's Harmony</h2>
+                        <p>
+                            A hummingbird in mid-flight gracefully approaches a vibrant red hibiscus flower, 
+                            capturing the beauty of wildlife in motion. This stunning moment highlights the delicate balance of nature, 
+                            where color, motion, and life come together in perfect sync.
+                        </p>
+                        <a href="#" class="read-more">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="gallery-item" data-category="space">
+                    <div class="img-container">
+                        <img src="Moon.png" alt="Earth rise from Moon's perspective" loading="lazy">
+                        <div class="img-overlay"></div>
+                        <div class="img-like">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-content">
+                        <div class="categories">
+                            <span class="tag">Space</span>
+                            <span class="tag">Earth</span>
+                        </div>
+                        <h2>Earthrise</h2>
+                        <p>
+                            A breathtaking view of our home planet emerging over the Moon's horizon, captured from space. 
+                            This iconic image serves as a powerful reminder of Earth's beauty, fragility, and the vastness of the universe.
+                        </p>
+                        <a href="#" class="read-more">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="gallery-item" data-category="nature">
+                    <div class="img-container">
+                        <img src="Flowers.png" alt="Elegance in Bloom" loading="lazy">
+                        <div class="img-overlay"></div>
+                        <div class="img-like">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-content">
+                        <div class="categories">
+                            <span class="tag">Nature</span>
+                            <span class="tag">Floral</span>
+                        </div>
+                        <h2>Elegance in Bloom</h2>
+                        <p>
+                            Delicate petals unfold in a mesmerizing display of nature's artistry. These blossoms showcase 
+                            the intricate details and vibrant colors that make floral photography so captivating. Each flower tells 
+                            a story of growth and resilience.
+                        </p>
+                        <a href="#" class="read-more">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="gallery-item" data-category="nature landscape">
+                    <div class="img-container">
+                        <img src="Night.png" alt="Northern Skies" loading="lazy">
+                        <div class="img-overlay"></div>
+                        <div class="img-like">
